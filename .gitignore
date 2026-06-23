@@ -31,3 +31,28 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# IntelliJ
+.idea/
+*.iml
+/workspace.xml
+/shelf/
+/httpRequests/
+/queries/
+/dataSources/
+/dataSources.local.xml
+
+# Maven
+target/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Build
+out/
