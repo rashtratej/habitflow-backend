@@ -1,0 +1,24 @@
+TEST USERS
+{
+    "email": "alpha@gmail.com",
+    "password": "123456"
+}
+
+{
+    "email": "beta@gmail.com",
+    "password": "123456"
+}
+
+ id |         created_at         |       email       |                           password                           | profile_picture_url | user_name | user_id
+----+----------------------------+-------------------+--------------------------------------------------------------+---------------------+-----------+---------
+  1 | 2026-06-23 17:11:21.040881 | rashtra@gmail.com | $2a$10$7E0lW1G9hWuYHq7/R/ZevOvCqGhMm2td0d9fUpuGdNMboROxmh0am |                     | rashtra   |
+  2 | 2026-06-23 17:38:53.229907 | test2@gmail.com   | $2a$10$CFdxn22xGUhp/GISEAqcJ.hk9DcAZddF6PONlKEHKio17h3tYnt1m |                     | test2     |
+  3 | 2026-06-23 17:42:07.021091 | alpha@gmail.com   | $2a$10$vmfglmvRwswd7PjQhqgyQeZxZFn4F74LyD4kUMk/t3w/ZdHSwoRtW |                     | alpha     |
+(3 rows)
+
+ENDPOINTS
+
+POST /auth/register
+POST /auth/login
+POST /habits/create
+GET /habits/my

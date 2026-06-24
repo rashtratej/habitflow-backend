@@ -37,7 +37,6 @@ public class JwtService {
                 .getSubject();
     }
 
-
     public boolean validateToken(String token, String email) {
 
         String extractedEmail = extractEmail(token);

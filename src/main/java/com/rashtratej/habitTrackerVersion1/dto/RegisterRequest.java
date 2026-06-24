@@ -10,7 +10,7 @@ import lombok.Setter;
 public class RegisterRequest {
 
     @NotBlank
-    private String username;
+    private String userName;
 
     @Email
     @NotBlank

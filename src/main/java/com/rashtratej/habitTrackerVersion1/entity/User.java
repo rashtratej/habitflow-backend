@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users") // Avoids database keyword conflict with "user"
@@ -33,6 +34,12 @@ public class User {
     private String profilePictureUrl;
 
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "user")
+    private List<Habit> habits;
 
 
 
