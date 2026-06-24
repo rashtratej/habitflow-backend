@@ -1,42 +1,55 @@
 # HabitFlow Backend
 
-A Spring Boot backend powering a habit-tracking and social-sharing web application where users can track habits, upload aesthetic content, and build consistency through visual progress.
+A Spring Boot backend powering a secure habit-tracking web application where users can create habits, track daily consistency, and manage personal progress through authenticated APIs.
 
 ## Project Objective
 
-Build a full-stack application combining:
+Build a portfolio-grade full-stack application combining:
 
-- Habit tracking system
-- User authentication and authorization
-- Social content sharing (Pinterest-style inspiration feed)
-- Progress analytics and streak tracking
+* Secure user authentication and authorization
+* Personal habit tracking system
+* Progress monitoring and analytics
+* Future social-sharing system (Pinterest-style inspiration feed)
 
-This project is being developed as a portfolio-grade full-stack engineering project.
+This project is being developed as a production-oriented full-stack engineering project.
 
 ---
 
 ## Features Implemented
 
-### Authentication Module
+### Authentication & Security Module
 
-- User Registration API
-- Login API
-- Password encryption using BCrypt
-- JWT Token Generation
-- Spring Security integration
+* User Registration API
+* Login API
+* Password encryption using BCrypt
+* JWT Token Generation
+* JWT Authentication Filter
+* Spring Security integration
+* Protected Routes with Stateless Authentication
+
+### Habit Management Module
+
+* Create Habit API
+* Fetch User-Specific Habits API
+* Mark Habit as Completed API
+* Ownership-Based Authorization Checks
+* Prevention of Unauthorized Resource Access
 
 ### Database Layer
 
-- PostgreSQL integration
-- Hibernate / JPA ORM
-- Repository layer implementation
+* PostgreSQL integration
+* Hibernate / JPA ORM
+* One-to-Many relationship mapping (User → Habits)
+* Repository layer implementation
 
 ### Backend Architecture
 
-- DTO pattern implementation
-- Service layer architecture
-- REST API development
-- Dependency Injection with Spring Beans
+* DTO pattern implementation
+* Service layer architecture
+* REST API development
+* Dependency Injection with Spring Beans
+* Global Exception Handling using @RestControllerAdvice
+* Structured API error responses
 
 ---
 
@@ -44,60 +57,75 @@ This project is being developed as a portfolio-grade full-stack engineering proj
 
 ### Backend
 
-- Java
-- Spring Boot
-- Spring Security
-- Spring Data JPA
-- Hibernate
-- Maven
+* Java
+* Spring Boot
+* Spring Security
+* Spring Data JPA
+* Hibernate
+* Maven
 
 ### Database
 
-- PostgreSQL
+* PostgreSQL
 
 ### Tools
 
-- Postman
-- IntelliJ IDEA
-- Git
-- GitHub
+* Postman
+* IntelliJ IDEA
+* Git
+* GitHub
 
 ---
 
 ## API Endpoints Built
 
-### Register User
+### Authentication
 
 ```http
 POST /auth/register
-```
-
-### Login User
-
-```http
 POST /auth/login
 ```
+
+### Habit Management
+
+```http
+POST /habits/create
+GET /habits/my
+PATCH /habits/{id}/complete
+```
+
+---
+
+## Security Features
+
+* JWT-Based Authentication
+* Password Hashing with BCrypt
+* Protected API Routes
+* User-Specific Data Isolation
+* Ownership Verification Before Resource Updates
+* Prevention of Unauthorized Habit Modification
 
 ---
 
 ## Upcoming Features
 
-- JWT Authentication Filter
-- Protected Routes
-- Habit CRUD APIs
-- User Profile System
-- Pinterest-style content feed
-- File upload support
-- Frontend development
-- Deployment
+* Delete Habit API
+* Update Habit API
+* Habit Analytics Dashboard
+* User Profile System
+* Profile Picture Upload Support
+* Pinterest-style Content Feed
+* Media Upload Support
+* Frontend Development
+* Deployment
 
 ---
 
 ## Current Development Status
 
-Backend Authentication Layer Completed
+Core Backend Architecture Completed
 
-Progress: 22%
+Progress: 45%
 
 ---
 
@@ -105,11 +133,12 @@ Progress: 22%
 
 src/main/java/com/rashtratej/habitTrackerVersion1
 
-config/  
-controller/  
-dto/  
-entity/  
-repository/  
+config/
+controller/
+dto/
+entity/
+exception/
+repository/
 service/
 
 ---
