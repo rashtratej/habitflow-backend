@@ -34,6 +34,7 @@ This project is being developed as a production-oriented full-stack engineering 
 * Mark Habit as Completed API
 * Ownership-Based Authorization Checks
 * Prevention of Unauthorized Resource Access
+* Habit Analytics API
 
 ### Database Layer
 

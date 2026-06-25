@@ -1,25 +1,34 @@
 package com.rashtratej.habitTrackerVersion1.dto;
 
+import java.time.LocalDateTime;
+
 public class ErrorResponse {
 
     private String message;
 
-    public ErrorResponse() {
-    }
+    private LocalDateTime timestamp;
+    private int status;
+    private String error;
 
     public ErrorResponse(
-            String message
+            LocalDateTime timestamp,
+            int status,
+            String error
     ) {
-        this.message = message;
+        this.timestamp = timestamp;
+        this.status = status;
+        this.error = error;
     }
 
-    public String getMessage() {
-        return message;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setMessage(
-            String message
-    ) {
-        this.message = message;
+    public int getStatus() {
+        return status;
+    }
+
+    public String getError() {
+        return error;
     }
 }

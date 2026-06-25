@@ -46,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String email =
                 jwtService.extractEmail(token);
+        System.out.println("JWT EMAIL = " + email);
 
         UserDetails userDetails =
                 userDetailsService

@@ -35,10 +35,14 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Habit> habits;
 
 

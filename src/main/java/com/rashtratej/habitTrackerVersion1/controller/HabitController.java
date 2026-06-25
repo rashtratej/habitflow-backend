@@ -1,6 +1,9 @@
 package com.rashtratej.habitTrackerVersion1.controller;
 
 import com.rashtratej.habitTrackerVersion1.dto.CreateHabitRequest;
+import com.rashtratej.habitTrackerVersion1.dto.HabitResponse;
+import com.rashtratej.habitTrackerVersion1.dto.HabitStatsResponse;
+import com.rashtratej.habitTrackerVersion1.dto.UpdateHabitRequest;
 import com.rashtratej.habitTrackerVersion1.entity.Habit;
 import com.rashtratej.habitTrackerVersion1.service.HabitService;
 
@@ -41,8 +44,8 @@ public class HabitController {
         return ResponseEntity.ok(habits);
     }
 
-    @PatchMapping("/{id}/complete") public ResponseEntity<Habit> completeHabit(@PathVariable Long id
-    ) {
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<Habit> completeHabit(@PathVariable Long id) {
 
         Habit updatedHabit =
                 habitService
@@ -52,4 +55,59 @@ public class HabitController {
                 updatedHabit
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteHabit(@PathVariable Long id) {
+
+        String response =
+                habitService
+                        .deleteHabit(id);
+
+        return ResponseEntity.ok(
+                response
+        );
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<HabitStatsResponse> getHabitStats() {
+
+        HabitStatsResponse stats =
+                habitService.getHabitStats();
+
+        return ResponseEntity.ok(stats);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Habit> updateHabit(@PathVariable Long id, @Valid @RequestBody UpdateHabitRequest request) {
+
+        Habit updatedHabit =
+                habitService.updateHabit(
+                        id,
+                        request
+                );
+
+        return ResponseEntity.ok(
+                updatedHabit
+        );
+    }
+
+
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<HabitResponse>
+//    updateHabit(@PathVariable Long id,
+//                @Valid @RequestBody
+//            UpdateHabitRequest request
+//    ) {
+//
+//        HabitResponse habit =
+//                habitService.updateHabit(
+//                        id,
+//                        request
+//                );
+//
+//        return ResponseEntity.ok(
+//                habit
+//        );
+//    }
 }

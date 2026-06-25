@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface HabitRepository extends JpaRepository<Habit, Long> {
     List<Habit> findByUser(User user);
 
-    Optional<Habit> findByIdAndUser(
-            Long id,
-            User user
-    );
+    Optional<Habit> findByIdAndUser(Long id, User user);
+
+    long countByUser(User user);
+
+    long countByUserAndCompleted(User user, boolean completed);
     }
