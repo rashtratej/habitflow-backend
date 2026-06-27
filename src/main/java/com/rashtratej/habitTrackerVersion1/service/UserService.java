@@ -94,7 +94,7 @@ public class UserService {
             throw new InvalidPasswordException("Invalid password");
         }
 
-        return jwtService.generateToken(user.getEmail());
+        return jwtService.generateToken(user.getId());
     }
 
     public UserResponse getCurrentUser() {
@@ -198,7 +198,7 @@ public class UserService {
 
     public String deleteCurrentUser() {
 
-        User user = authenticationService.getCurrentUser();;
+        User user = authenticationService.getCurrentUser();
 
         userRepository.delete(user);
 

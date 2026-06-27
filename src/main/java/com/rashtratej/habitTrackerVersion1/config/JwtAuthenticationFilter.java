@@ -1,7 +1,8 @@
 package com.rashtratej.habitTrackerVersion1.config;
 
 
-import com.rashtratej.habitTrackerVersion1.service.CustomUserDetailsService;
+import com.rashtratej.habitTrackerVersion1.entity.User;
+import com.rashtratej.habitTrackerVersion1.repository.UserRepository;
 import com.rashtratej.habitTrackerVersion1.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,49 +20,42 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final CustomUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(
-            JwtService jwtService,
-            CustomUserDetailsService userDetailsService
-    ) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader =
-                request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null ||
-                !authHeader.startsWith("Bearer ")) {
-
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        String token =
-                authHeader.substring(7);
+        String token = authHeader.substring(7);
 
-        String email =
-                jwtService.extractEmail(token);
-        System.out.println("JWT EMAIL = " + email);
+        Long userId = jwtService.extractUserId(token);
+        // System.out.println("JWT EMAIL = " + email);
 
-        UserDetails userDetails =
-                userDetailsService
-                        .loadUserByUsername(email);
-        if (jwtService.validateToken(
-                token,
-                userDetails.getUsername()
-        )) {
+        User user = userRepository.findById(userId).orElseThrow();
+        //
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                        .builder()
+                        .username(user.getEmail())
+                        .password(user.getPassword())
+                        .build();
+        //
 
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
+
+        if (jwtService.validateToken(token, user.getId())) {
+
+
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
 
             SecurityContextHolder
                     .getContext()

@@ -11,10 +11,10 @@ public class JwtService {
             "thisIsMyTemporarySecretKeyForJwtTesting123456";
         // TODO: Move secret key to environment variables
 
-    public String generateToken(String email) {
+    public String generateToken(Long userId) {
 
         return Jwts.builder()
-                .subject(email)
+                .subject(String.valueOf(userId))
                 .issuedAt(new Date())
                 .expiration(
                         new Date(System.currentTimeMillis()
@@ -27,20 +27,29 @@ public class JwtService {
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public Long extractUserId(String token) {
 
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        String subject =
+                Jwts.parser()
+                        .setSigningKey(SECRET_KEY)
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody()
+                        .getSubject();
+
+        return Long.parseLong(subject);
     }
 
-    public boolean validateToken(String token, String email) {
+    public boolean validateToken(
+            String token,
+            Long userId
+    ) {
 
-        String extractedEmail = extractEmail(token);
+        Long extractedUserId =
+                extractUserId(token);
 
-        return extractedEmail.equals(email);
+        return extractedUserId.equals(
+                userId
+        );
     }
 }
