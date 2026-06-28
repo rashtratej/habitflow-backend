@@ -60,23 +60,6 @@ public class UserService {
         return user;
     }
 
-//    private User authenticationService.getCurrentUser(); {
-//
-//        String email =
-//                SecurityContextHolder
-//                        .getContext()
-//                        .getAuthentication()
-//                        .getName();
-//
-//        return userRepository
-//                .findByEmail(email)
-//                .orElseThrow(() ->
-//                        new UserNotFoundException(
-//                                "User not found"
-//                        )
-//                );
-//    }
-
     public String loginUser(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
@@ -113,11 +96,8 @@ public class UserService {
                                 )
                         );
 
-        return new UserResponse(
-                user.getId(),
-                user.getUserName(),
-                user.getEmail(),
-                user.getProfilePictureUrl()
+        return mapToUserResponse(
+                user
         );
     }
 
@@ -160,11 +140,8 @@ public class UserService {
         User updatedUser =
                 userRepository.save(user);
 
-        return new UserResponse(
-                updatedUser.getId(),
-                updatedUser.getUserName(),
-                updatedUser.getEmail(),
-                updatedUser.getProfilePictureUrl()
+        return mapToUserResponse(
+                updatedUser
         );
     }
 
@@ -203,5 +180,14 @@ public class UserService {
         userRepository.delete(user);
 
         return "Account deleted successfully";
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUserName(),
+                user.getEmail(),
+                user.getProfilePictureUrl()
+        );
     }
 }

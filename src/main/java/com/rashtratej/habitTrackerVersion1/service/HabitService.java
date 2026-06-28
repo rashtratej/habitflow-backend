@@ -1,9 +1,6 @@
 package com.rashtratej.habitTrackerVersion1.service;
 
-import com.rashtratej.habitTrackerVersion1.dto.CreateHabitRequest;
-import com.rashtratej.habitTrackerVersion1.dto.HabitResponse;
-import com.rashtratej.habitTrackerVersion1.dto.HabitStatsResponse;
-import com.rashtratej.habitTrackerVersion1.dto.UpdateHabitRequest;
+import com.rashtratej.habitTrackerVersion1.dto.*;
 import com.rashtratej.habitTrackerVersion1.entity.Habit;
 import com.rashtratej.habitTrackerVersion1.entity.User;
 import com.rashtratej.habitTrackerVersion1.exception.HabitNotFoundException;
@@ -11,6 +8,10 @@ import com.rashtratej.habitTrackerVersion1.exception.UserNotFoundException;
 import com.rashtratej.habitTrackerVersion1.repository.HabitRepository;
 import com.rashtratej.habitTrackerVersion1.repository.UserRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,9 @@ public class HabitService {
         this.authenticationService = authenticationService;
     }
 
-    public Habit createHabit(CreateHabitRequest request) {
+    public HabitResponse createHabit(CreateHabitRequest request) {
 
-        User user = authenticationService.getCurrentUser();;
+        User user = authenticationService.getCurrentUser();
         Habit habit = new Habit();
 
         habit.setTitle(request.getTitle());
@@ -50,17 +51,40 @@ public class HabitService {
         habit.setUser(user);
 
 
-        return habitRepository.save(habit);
+        return mapToHabitResponse(
+                habitRepository.save(habit)
+        );
     }
 
-    public List<Habit> getMyHabits() {
+    public PaginatedHabitResponse getMyHabits(int page, int size, String sortBy, String direction) {
 
-        User user = authenticationService.getCurrentUser();;
+        User user = authenticationService.getCurrentUser();
 
-        return habitRepository.findByUser(user);
+        Sort sort;
+        if (direction.equalsIgnoreCase("desc")) {
+            sort = Sort.by(sortBy).descending();
+        } else {
+            sort = Sort.by(sortBy).ascending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Habit> habitPage = habitRepository.findByUser(user, pageable);
+
+        List<HabitResponse> habits = habitPage.getContent()
+                        .stream()
+                        .map(this::mapToHabitResponse)
+                        .toList();
+
+        return new PaginatedHabitResponse(
+                habits,
+                habitPage.getNumber(),
+                habitPage.getTotalPages(),
+                habitPage.getTotalElements()
+        );
     }
 
-    public Habit markHabitComplete(Long habitId) {
+    public HabitResponse markHabitComplete(Long habitId) {
 
         User user = authenticationService.getCurrentUser();;
 
@@ -79,7 +103,7 @@ public class HabitService {
 
         habit.setCompleted(true);
 
-        return habitRepository.save(habit);
+        return mapToHabitResponse(habitRepository.save(habit));
     }
 
     public HabitStatsResponse getHabitStats() {
@@ -116,7 +140,7 @@ public class HabitService {
         );
     }
 
-    public Habit updateHabit(Long habitId, UpdateHabitRequest request) {
+    public HabitResponse updateHabit(Long habitId, UpdateHabitRequest request) {
 
         User user = authenticationService.getCurrentUser();;
         Habit habit =
@@ -139,25 +163,9 @@ public class HabitService {
                 request.getDescription()
         );
 
-        return habitRepository.save(habit);
+        return mapToHabitResponse(habitRepository.save(habit));
     }
 
-//    private User authenticationService.getCurrentUser(); {
-//
-//        String email =
-//                SecurityContextHolder
-//                        .getContext()
-//                        .getAuthentication()
-//                        .getName();
-//
-//        return userRepository
-//                .findByEmail(email)
-//                .orElseThrow(() ->
-//                        new UserNotFoundException(
-//                                "User not found"
-//                        )
-//                );
-//    }
     public String deleteHabit(Long habitId) {
 
         User user =
@@ -178,6 +186,16 @@ public class HabitService {
         habitRepository.delete(habit);
 
         return "Habit deleted successfully";
+    }
+
+    private HabitResponse mapToHabitResponse(Habit habit) {
+        return new HabitResponse(
+                habit.getId(),
+                habit.getTitle(),
+                habit.getDescription(),
+                habit.isCompleted(),
+                habit.getCreatedAt()
+        );
     }
 
 }
