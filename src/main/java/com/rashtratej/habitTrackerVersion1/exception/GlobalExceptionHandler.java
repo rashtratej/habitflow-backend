@@ -13,10 +13,7 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse>
-    handleRuntimeException(
-            RuntimeException ex
-    ) {
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
 
         ErrorResponse error =
                 new ErrorResponse(
@@ -31,13 +28,8 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(
-            UserNotFoundException.class
-    )
-    public ResponseEntity<ErrorResponse>
-    handleUserNotFound(
-            UserNotFoundException ex
-    ) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
 
         ErrorResponse error =
                 new ErrorResponse(
@@ -52,13 +44,8 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(
-            HabitNotFoundException.class
-    )
-    public ResponseEntity<ErrorResponse>
-    handleHabitNotFound(
-            HabitNotFoundException ex
-    ) {
+    @ExceptionHandler(HabitNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleHabitNotFound(HabitNotFoundException ex) {
 
         ErrorResponse error =
                 new ErrorResponse(
@@ -73,13 +60,8 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(
-            MethodArgumentNotValidException.class
-    )
-    public ResponseEntity<ErrorResponse>
-    handleValidationException(
-            MethodArgumentNotValidException ex
-    ) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
 
         String message =
                 ex.getBindingResult()
@@ -91,6 +73,22 @@ public class GlobalExceptionHandler {
                         LocalDateTime.now(),
                         400,
                         message
+                );
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(InvalidSortFieldException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSortField(InvalidSortFieldException ex) {
+
+        ErrorResponse error =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        400,
+                        ex.getMessage()
                 );
 
         return new ResponseEntity<>(

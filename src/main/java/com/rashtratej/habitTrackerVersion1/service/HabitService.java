@@ -4,6 +4,7 @@ import com.rashtratej.habitTrackerVersion1.dto.*;
 import com.rashtratej.habitTrackerVersion1.entity.Habit;
 import com.rashtratej.habitTrackerVersion1.entity.User;
 import com.rashtratej.habitTrackerVersion1.exception.HabitNotFoundException;
+import com.rashtratej.habitTrackerVersion1.exception.InvalidSortFieldException;
 import com.rashtratej.habitTrackerVersion1.exception.UserNotFoundException;
 import com.rashtratej.habitTrackerVersion1.repository.HabitRepository;
 import com.rashtratej.habitTrackerVersion1.repository.UserRepository;
@@ -59,6 +60,16 @@ public class HabitService {
     public PaginatedHabitResponse getMyHabits(int page, int size, String sortBy, String direction) {
 
         User user = authenticationService.getCurrentUser();
+
+        if (!sortBy.equals("createdAt")
+                &&
+                !sortBy.equals("title")
+                &&
+                !sortBy.equals("completed")) {
+
+            throw new InvalidSortFieldException("Invalid sort field");
+        }
+
 
         Sort sort;
         if (direction.equalsIgnoreCase("desc")) {

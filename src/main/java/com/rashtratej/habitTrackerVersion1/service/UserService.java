@@ -40,20 +40,31 @@ public class UserService {
 
         User user = new User();
 
-        user.setUserName(request.getUserName());
+        user.setUserName(
+                request.getUserName()
+        );
 
-        if (!user.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
-
+        if (userRepository.existsByEmail(
+                request.getEmail()
+        )) {
             throw new DuplicateEmailException(
                     "Email already exists"
             );
         }
 
-        user.setEmail(request.getEmail());
+        user.setEmail(
+                request.getEmail()
+        );
 
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getPassword()
+                )
+        );
 
-        user.setCreatedAt(LocalDateTime.now());
+        user.setCreatedAt(
+                LocalDateTime.now()
+        );
 
         userRepository.save(user);
 
@@ -190,4 +201,6 @@ public class UserService {
                 user.getProfilePictureUrl()
         );
     }
+
+
 }

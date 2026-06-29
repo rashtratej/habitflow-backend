@@ -19,6 +19,10 @@ public class HabitStatsResponse {
         this.completionRate = completionRate;
     }
 
+    public HabitStatsResponse() {
+
+    }
+
     public int getTotalHabits() {
         return totalHabits;
     }
