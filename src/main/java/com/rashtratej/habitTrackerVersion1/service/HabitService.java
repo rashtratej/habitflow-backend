@@ -33,20 +33,21 @@ public class HabitService {
 
     public HabitResponse createHabit(CreateHabitRequest request) {
 
+
         User user = authenticationService.getCurrentUser();
         Habit habit = new Habit();
 
         habit.setTitle(request.getTitle());
 
-        habit.setDescription(
-                request.getDescription()
-        );
+        habit.setDescription(request.getDescription());
 
         habit.setCompleted(false);
 
-        habit.setCreatedAt(
-                LocalDateTime.now()
-        );
+        habit.setStreak(0);
+
+        habit.setLastCompletedDate(null);
+
+        habit.setCreatedAt(LocalDateTime.now());
 
         habit.setUser(user);
 
@@ -102,7 +103,7 @@ public class HabitService {
                         .orElseThrow(() -> new HabitNotFoundException("Habit not found"));
 
 
-        habit.setCompleted(true);
+//        habit.setCompleted(true);
 
         LocalDate today = LocalDate.now();
 

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "habits")
@@ -20,22 +21,29 @@ public class Habit {
     private String description;
 
     @Column(nullable = false)
-    private boolean completed;
-
-    @Column(nullable = true)
-    private LocalDate lastCompletedDate;
-
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private int streak = 0;
+    private boolean completed;
+
+    @Column(nullable = false)
+    private int streak;
+
+    private LocalDate lastCompletedDate;
 
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
+
+    @OneToMany(
+            mappedBy = "habit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<HabitCompletion> completions;
+
 
     public Habit() {
     }
@@ -45,6 +53,14 @@ public class Habit {
     }
 
     // getters
+
+    public int getStreak() {
+        return streak;
+    }
+
+    public LocalDate getLastCompletedDate() {
+        return lastCompletedDate;
+    }
 
     public Long getId() {
         return id;
@@ -62,20 +78,24 @@ public class Habit {
         return description;
     }
 
-    public int getStreak() {return streak;}
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDate getLastCompletedDate() {
-        return lastCompletedDate;
-    }
+
 
  // setters
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setStreak(int streak) {
+        this.streak = streak;
+    }
+
+    public void setLastCompletedDate(LocalDate lastCompletedDate) {
+        this.lastCompletedDate = lastCompletedDate;
     }
 
     public void setDescription(String description) {
@@ -86,10 +106,6 @@ public class Habit {
         this.title = title;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -98,11 +114,8 @@ public class Habit {
         this.user = user;
     }
 
-    public void setStreak(int streak) {
-        this.streak = streak;
+    public void setCompleted(boolean completed){
+        this.completed = completed;
     }
 
-    public void setLastCompletedDate(LocalDate lastCompletedDate) {
-        this.lastCompletedDate = lastCompletedDate;
-    }
 }
