@@ -5,7 +5,6 @@ import com.rashtratej.habitTrackerVersion1.entity.Habit;
 import com.rashtratej.habitTrackerVersion1.entity.User;
 import com.rashtratej.habitTrackerVersion1.exception.HabitNotFoundException;
 import com.rashtratej.habitTrackerVersion1.exception.InvalidSortFieldException;
-import com.rashtratej.habitTrackerVersion1.exception.UserNotFoundException;
 import com.rashtratej.habitTrackerVersion1.repository.HabitRepository;
 import com.rashtratej.habitTrackerVersion1.repository.UserRepository;
 
@@ -13,9 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -99,19 +98,28 @@ public class HabitService {
 
         User user = authenticationService.getCurrentUser();;
 
-        Habit habit =
-                habitRepository
-                        .findByIdAndUser(
-                                habitId,
-                                user
-                        )
-                        .orElseThrow(() ->
-                                new HabitNotFoundException(
-                                        "Habit not found"
-                                )
-                        );
+        Habit habit = habitRepository.findByIdAndUser(habitId, user)
+                        .orElseThrow(() -> new HabitNotFoundException("Habit not found"));
 
 
+        habit.setCompleted(true);
+
+        LocalDate today = LocalDate.now();
+
+        if (habit.getLastCompletedDate() == null) {
+            habit.setStreak(1);
+        }
+        else if (habit.getLastCompletedDate().equals(today)) {
+            // already completed today
+        }
+        else if (habit.getLastCompletedDate().equals(today.minusDays(1))) {
+            habit.setStreak(habit.getStreak() + 1);
+        }
+        else {
+            habit.setStreak(1);
+        }
+
+        habit.setLastCompletedDate(today);
         habit.setCompleted(true);
 
         return mapToHabitResponse(habitRepository.save(habit));
@@ -205,7 +213,8 @@ public class HabitService {
                 habit.getTitle(),
                 habit.getDescription(),
                 habit.isCompleted(),
-                habit.getCreatedAt()
+                habit.getCreatedAt(),
+                habit.getStreak()
         );
     }
 

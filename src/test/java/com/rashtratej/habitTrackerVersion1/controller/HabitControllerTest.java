@@ -62,7 +62,7 @@ public class HabitControllerTest {
                         "Running",
                         "Morning run",
                         false,
-                        java.time.LocalDateTime.now()
+                        java.time.LocalDateTime.now(),0
                 );
 
         when(habitService.createHabit(any(CreateHabitRequest.class)))
@@ -102,7 +102,7 @@ public class HabitControllerTest {
                         "Running",
                         "Morning run",
                         true,
-                        LocalDateTime.now()
+                        LocalDateTime.now(),0
                 );
 
         when(habitService.markHabitComplete(1L))
@@ -151,7 +151,7 @@ public class HabitControllerTest {
                         "Gym",
                         "Evening gym",
                         false,
-                        LocalDateTime.now()
+                        LocalDateTime.now(),0
                 );
 
         when(habitService.updateHabit(eq(1L), any(UpdateHabitRequest.class)))

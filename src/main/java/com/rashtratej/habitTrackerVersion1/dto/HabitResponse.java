@@ -9,19 +9,23 @@ public class HabitResponse {
     private String description;
     private boolean completed;
     private LocalDateTime createdAt;
+    private int streak;
 
     public HabitResponse(
             Long id,
             String title,
             String description,
             boolean completed,
-            LocalDateTime createdAt
+            LocalDateTime createdAt,
+            int streak
+
     ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.completed = completed;
         this.createdAt = createdAt;
+        this.streak = streak;
     }
 
     public Long getId() {
@@ -43,4 +47,9 @@ public class HabitResponse {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public int getStreak() {
+        return streak;
+    }
+
 }
