@@ -2,17 +2,22 @@ package com.rashtratej.habitTrackerVersion1.controller;
 import com.rashtratej.habitTrackerVersion1.dto.ChangePasswordRequest;
 import com.rashtratej.habitTrackerVersion1.dto.UpdateUserRequest;
 import com.rashtratej.habitTrackerVersion1.dto.UserResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import com.rashtratej.habitTrackerVersion1.entity.User;
 import com.rashtratej.habitTrackerVersion1.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
 
 @RestController
 @RequestMapping("/users")
+@Tag(
+        name = "User Management",
+        description = "Registration, login and account management"
+)
 public class UserController {
 
     private final UserService userService;
@@ -21,6 +26,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Get current user profile",
+            description = "Returns currently authenticated user details"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "User retrieved successfully"
+    )
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser() {
 
@@ -30,6 +43,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @Operation(
+            summary = "Update user profile",
+            description = "Updates current authenticated user profile"
+    )
     @PutMapping("/me")
     public ResponseEntity<UserResponse>
     updateCurrentUser(@Valid @RequestBody UpdateUserRequest request) {
@@ -45,6 +62,10 @@ public class UserController {
         );
     }
 
+    @Operation(
+            summary = "Change password",
+            description = "Changes password for authenticated user"
+    )
     @PutMapping("/change-password")
     public ResponseEntity<String>
     changePassword(@Valid @RequestBody ChangePasswordRequest request) {
@@ -59,6 +80,15 @@ public class UserController {
         );
     }
 
+
+    @Operation(
+            summary = "Delete user account",
+            description = "Deletes currently authenticated user account"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "User deleted successfully"
+    )
     @DeleteMapping("/me")
     public ResponseEntity<String>
     deleteCurrentUser() {
@@ -71,19 +101,4 @@ public class UserController {
                 response
         );
     }
-
-
-
-
-
 }
-
-//@PostMapping("/register")
-//public String registerUser(@RequestParam("username") String username,
-//                           @RequestParam("avatar") MultipartFile profilepicture) throws IOException {
-//    User profile = new User();
-//    profile.setUserName(username);
-//
-//
-//    return "User profile and image binary saved to DB!";
-//}

@@ -3,6 +3,8 @@ package com.rashtratej.habitTrackerVersion1.controller;
 import com.rashtratej.habitTrackerVersion1.dto.*;
 import com.rashtratej.habitTrackerVersion1.entity.Habit;
 import com.rashtratej.habitTrackerVersion1.service.HabitService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 
@@ -13,6 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/habits")
+@Tag(
+        name = "Habit Management",
+        description = "Create, update, delete and manage habits"
+)
 public class HabitController {
 
     private final HabitService habitService;
@@ -20,7 +26,10 @@ public class HabitController {
     public HabitController(HabitService habitService) {
         this.habitService = habitService;
     }
-
+    @Operation(
+            summary = "Create new habit",
+            description = "Creates a new habit for authenticated user"
+    )
     @PostMapping("/create")
     public ResponseEntity<HabitResponse> createHabit(@Valid @RequestBody CreateHabitRequest request) {
 
@@ -30,6 +39,9 @@ public class HabitController {
         return ResponseEntity.ok(savedHabit);
     }
 
+    @Operation(
+            summary = "Get all user habits"
+    )
     @GetMapping("/my")
     public ResponseEntity<PaginatedHabitResponse> getMyHabits(
             @RequestParam(defaultValue = "0") int page,
@@ -42,6 +54,10 @@ public class HabitController {
         return ResponseEntity.ok(habits);
     }
 
+    @Operation(
+            summary = "Mark habit complete"
+            // , description = "Creates a new habit for authenticated user"
+    )
     @PatchMapping("/{id}/complete")
     public ResponseEntity<HabitResponse> completeHabit(@PathVariable Long id) {
 
@@ -54,6 +70,10 @@ public class HabitController {
         );
     }
 
+    @Operation(
+            summary = "delete habit"
+           // ,description = "Creates a new habit for authenticated user"
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteHabit(@PathVariable Long id) {
 
@@ -66,6 +86,10 @@ public class HabitController {
         );
     }
 
+    @Operation(
+            summary = "Get habit statistics"
+            // , description = "Creates a new habit for authenticated user"
+    )
     @GetMapping("/stats")
     public ResponseEntity<HabitStatsResponse> getHabitStats() {
 
@@ -75,6 +99,10 @@ public class HabitController {
         return ResponseEntity.ok(stats);
     }
 
+    @Operation(
+            summary = "Update habit"
+            // , description = "Creates a new habit for authenticated user"
+    )
     @PutMapping("/{id}")
     public ResponseEntity<HabitResponse> updateHabit(@PathVariable Long id, @Valid @RequestBody UpdateHabitRequest request) {
 

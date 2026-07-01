@@ -1,8 +1,9 @@
 package com.rashtratej.habitTrackerVersion1.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
@@ -22,13 +23,22 @@ public class OpenApiConfig {
                 .info(
                         new Info()
                                 .title(
-                                        "HabitFlow API"
+                                        "Habit Tracker API"
                                 )
                                 .version(
                                         "1.0"
                                 )
                                 .description(
-                                        "Habit tracking backend API"
+                                        "Backend API for habit tracking application with authentication, habit management, streak tracking and analytics"
+                                )
+                                .contact(
+                                        new Contact()
+                                                .name(
+                                                        "Rashtra Tej"
+                                                )
+                                                .email(
+                                                        "your-email@example.com"
+                                                )
                                 )
                 )
 

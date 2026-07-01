@@ -15,17 +15,19 @@ import java.util.Optional;
 public interface HabitRepository extends JpaRepository<Habit, Long> {
 
 
-    void resetAllHabits();
     //List<Habit> findByUser(User user);
     Page<Habit> findByUser(User user, Pageable pageable);
 
     Optional<Habit> findByIdAndUser(Long id, User user);
 
     long countByUser(User user);
+
+    long countByUserAndCompleted(User user, boolean completed);
+
     @Modifying
     @Transactional
     @Query("UPDATE Habit h SET h.completed = false")
-    long countByUserAndCompleted(User user, boolean completed);
+    void resetAllHabits();
 
 
     }

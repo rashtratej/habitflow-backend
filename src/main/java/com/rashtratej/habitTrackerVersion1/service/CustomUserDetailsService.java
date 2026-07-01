@@ -4,7 +4,6 @@ package com.rashtratej.habitTrackerVersion1.service;
 import com.rashtratej.habitTrackerVersion1.entity.User;
 import com.rashtratej.habitTrackerVersion1.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
